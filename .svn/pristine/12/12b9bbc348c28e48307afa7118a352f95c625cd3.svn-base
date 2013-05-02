@@ -1,0 +1,47 @@
+package com.tudor.imgur;
+
+import com.tudor.imgur.util.ImgurLogin;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.widget.RelativeLayout;
+
+public class Main extends Activity {
+
+	private static String PIN;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		RelativeLayout root = (RelativeLayout) findViewById(R.id.root);
+		
+		ImgurLogin login = new ImgurLogin(root, this);
+		login.getPin();
+		
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	
+	public static void onPinLoaded(){
+		System.out.println(PIN);
+	}
+	
+	public static String getPIN() {
+		return PIN;
+	}
+
+	public static void setPIN(String pIN) {
+		PIN = pIN;
+	}
+
+	
+}
