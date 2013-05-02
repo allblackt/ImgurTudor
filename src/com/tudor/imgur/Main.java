@@ -49,7 +49,7 @@ public class Main extends Activity {
 			/* Get new authorization token */
 			Log.d(TAG, "Token expired, getting a new one...");
 			ImgurLogin login = new ImgurLogin(root, this);
-			//login.getOAuth2Token(refresh, TradeItemType.REFRESH_TOKEN);
+			login.getOAuth2Token(refresh, TradeItemType.REFRESH_TOKEN);
 		} else {
 			/* Trigger onLoginComplete */
 			Log.d(TAG, "Seems like everything is ready to start making calls...");

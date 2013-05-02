@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import com.tudor.imgur.APICalls.GetImage;
 import com.tudor.imgur.entity.ImgurImage;
 import com.tudor.imgur.entity.ImgurResponse;
+import com.tudor.imgur.util.ImageAdapter;
 
 public class ImageGridView extends Activity{
 	
@@ -54,7 +55,10 @@ public class ImageGridView extends Activity{
 			Type tipeToken = new TypeToken<ImgurResponse<List<ImgurImage>>>(){}.getType();
 			response = gson.fromJson(dummyImgurResponse, tipeToken);
 			
+			GridView gv = (GridView)findViewById(R.id.imageGrid);
+			gv.setAdapter(new ImageAdapter(getApplicationContext(), response.getData()));
 			
+					
 			for(ImgurImage image : response.getData()){
 				
 				if(this == null)
@@ -75,9 +79,11 @@ public class ImageGridView extends Activity{
 					}
 				});
 				
-        		((GridView)findViewById(R.id.imageGrid)).addView(imgbnew);
+        		//((GridView)findViewById(R.id.imageGrid)).addView(imgbnew);
+        		
+        		Log.d(TAG, "Getting image from:" + image.getLink());
             	
-            	new GetImage(imgbnew).execute(image.getLink());
+            	//new GetImage(imgbnew).execute(image.getLink());
 			}
 
 		} catch (JsonSyntaxException e) {

@@ -8,13 +8,13 @@ import java.net.URL;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 
 public class GetImage extends AsyncTask<String, Void, Drawable> {
 
-	private ImageButton imb;
+	private ImageView imb;
 	
-	public GetImage(ImageButton imb)
+	public GetImage(ImageView imb)
 	{
 		this.imb = imb;
 	}
