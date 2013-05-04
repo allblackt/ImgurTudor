@@ -11,6 +11,8 @@ public class Constants {
 	public static final String IMUGUR_PIN_URL = "https://api.imgur.com/oauth2/pin?";
 	public static final String IMUGUR_TOKEN_URL ="https://api.imgur.com/oauth2/token";
 	public static final String PREFERENCES_FILE_NAME = "tudor_imgur_prefs";
+
+	public static final String TAG = "ImgurTudor";
 	
 	
 	public static final class SettingsMap {
