@@ -1,7 +1,0 @@
-package com.tudor.imgur.util;
-
-public class Constants {
-	public static final String CLIENT_ID = "282a94c2223d40b";
-	public static final String CLIENT_SECRET = "c949a17dfcff6952bc29cb3917428c23d7e58e5c";
-	public static final String IMUGUR_PIN_URL = "https://api.imgur.com/oauth2/pin?";
-}
