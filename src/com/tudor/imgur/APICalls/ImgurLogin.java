@@ -1,4 +1,4 @@
-package com.tudor.imgur.util;
+package com.tudor.imgur.APICalls;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -22,8 +21,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
@@ -31,6 +28,7 @@ import android.widget.Toast;
 
 import com.tudor.imgur.Main;
 import com.tudor.imgur.R;
+import com.tudor.imgur.util.Constants;
 import com.tudor.imgur.util.Constants.TradeItemType;
 import com.tudor.imgur.util.http.MyHttpClientFactory;
 
@@ -154,10 +152,12 @@ public class ImgurLogin {
 						    editor.putString(Constants.SettingsMap.ACCESS_TOKEN, (String) imgurResponse.get("access_token"));
 						    editor.putLong(Constants.SettingsMap.ACCESS_TOKEN_VALIDITY,(System.currentTimeMillis()/1000 + 3600));
 						    editor.commit();
+						    ((Main)context).onLoginCompleted();
 						} else {
 							Log.d(TAG, "Some error occured: "+ response.getName() + " - " +  response.getValue());
-							Toast toast = Toast.makeText(context, (CharSequence) imgurResponse.getJSONObject("data").get("error"), Toast.LENGTH_SHORT);
+							Toast toast = Toast.makeText(context, (CharSequence) imgurResponse.getJSONObject("data").get("error"), Toast.LENGTH_LONG);
 							toast.show();
+							((Main)context).onLoginFailed();
 						}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -165,7 +165,7 @@ public class ImgurLogin {
 					e.printStackTrace();
 				} 
 				((Main)context).hideLoading();
-				((Main)context).onLoginCompleted();
+				
 			}
 		}.execute(trade_item);
 	}

@@ -55,23 +55,19 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
 			imgbnew = new ImageButton(context);
 			imgbnew.setContentDescription(image.getLink());
 			imgbnew.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imgbnew.setLayoutParams(new GridView.LayoutParams(200, 200));
+			imgbnew.setLayoutParams(new GridView.LayoutParams(160, 160));
 			imgbnew.setBackgroundDrawable(null);
 	    	imgbnew.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					String url =(String) ((ImageButton)v).getContentDescription();
-//					Intent i = new Intent(Intent.ACTION_VIEW);
-//					i.setData(Uri.parse(url));
-//					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					Intent i = new Intent(context, FullScreenImage.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					i.putExtra("url", url);
 					context.startActivity(i);
 				}
 			});
-	        
-	        new GetImage(((ImageView)imgbnew)).execute(image.getLink());
+	        new GetImage(((ImageView)imgbnew)).execute(image.getLink().replace(image.getId(), image.getId()+ "b") );
 		} else {
 			imgbnew = (ImageButton) convertView;
 		}

@@ -1,7 +1,5 @@
 package com.tudor.imgur;
 
-import org.apache.http.message.BasicNameValuePair;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,8 +10,8 @@ import android.view.Menu;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+import com.tudor.imgur.APICalls.ImgurLogin;
 import com.tudor.imgur.util.Constants;
-import com.tudor.imgur.util.ImgurLogin;
 import com.tudor.imgur.util.Constants.TradeItemType;
 
 public class Main extends Activity {
@@ -28,7 +26,7 @@ public class Main extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		Constants.ref_currentActivity = this;
@@ -38,6 +36,7 @@ public class Main extends Activity {
 		String auth = settings.getString(Constants.SettingsMap.ACCESS_TOKEN, null);
 		String refresh = settings.getString(Constants.SettingsMap.REFRESH_TOKEN, null);
 		Long token_exp = settings.getLong(Constants.SettingsMap.ACCESS_TOKEN_VALIDITY, System.currentTimeMillis()/1000);
+		
 		/* Force refresh */
 		token_exp = System.currentTimeMillis()/1000;
 		if(refresh == null){
@@ -73,6 +72,7 @@ public class Main extends Activity {
 	protected void onResume() {
 		super.onResume();
 		Constants.ref_currentActivity = this;
+		Log.d(TAG, "On Resume called");
 	}
 
 	public void onPinLoaded() {
@@ -108,5 +108,12 @@ public class Main extends Activity {
 		/* Transition to the gridview which will hold the images */
 		Intent viewAllImages = new Intent(this,ImageGridView.class);
         this.startActivity(viewAllImages); 
+	}
+
+	public void onLoginFailed() {
+		RelativeLayout root = (RelativeLayout) findViewById(R.id.root);
+		Log.d(TAG, "Login failed, rety the process from getting new pin step...");
+		ImgurLogin login = new ImgurLogin(root, this);
+		login.getPin();
 	}
 }

@@ -21,13 +21,21 @@ public class Constants {
 		public static final String ACCESS_TOKEN_VALIDITY = "ACCESS_TOKEN_VALIDITY";
 	}
 
-	public static enum TradeItemType{
+	public static enum TradeItemType {
 		PIN,
 		REFRESH_TOKEN;
 	};
 	
+	public static enum RequestType {
+		GET,
+		POST,
+		PUT,
+		DELETE
+	}
+	
 	public static final class ImgurAPIURL{
-		public static final String ACCOUNT_BASE = "https://api.imgur.com/3/account/me";
+		public static final String ACCOUNT_BASE   = "https://api.imgur.com/3/account/me";
+		public static final String ACCOUNT_IMAGES = "https://api.imgur.com/3/account/me/images";
 	}
 	
 }
