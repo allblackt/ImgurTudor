@@ -1,10 +1,10 @@
 package com.tudor.imgur.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -15,49 +15,32 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 
 import com.tudor.imgur.FullScreenImage;
-import com.tudor.imgur.R;
 import com.tudor.imgur.APICalls.GetImage;
 import com.tudor.imgur.entity.ImgurImage;
 
 public class ImageAdapter extends BaseAdapter implements ListAdapter {
 	
 	private Context context;
-	private final List<ImgurImage> imgurImages;
+	private List<ImgurImage> imgurImages;
+	private List<ImageButton> cache;
 
 	public ImageAdapter(Context context, List<ImgurImage> imgurImages) {
 		this.context = context;
 		this.imgurImages = imgurImages;
+		cacheImages();
 	}
 
-	@Override
-	public int getCount() {
-		return imgurImages.size();
-	}
-
-	@Override
-	public Object getItem(int position) {
-		return imgurImages.get(position);
-	}
-
-	@Override
-	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		ImageButton imgbnew = null;
-		
-		if (convertView == null){
-			ImgurImage image = imgurImages.get(position);
-			imgbnew = new ImageButton(context);
-			imgbnew.setContentDescription(image.getLink());
-			imgbnew.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imgbnew.setLayoutParams(new GridView.LayoutParams(160, 160));
-			imgbnew.setBackgroundDrawable(null);
-	    	imgbnew.setOnClickListener(new OnClickListener() {
+	/* Caches the images for fast display; Eager loading */
+	private void cacheImages() {
+		cache = imgurImages.size() > 0 ? new ArrayList<ImageButton>() : null;
+		for (ImgurImage image : imgurImages) {
+			
+			ImageButton img = new ImageButton(context);
+			img.setContentDescription(image.getLink());
+			img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			img.setLayoutParams(new GridView.LayoutParams(160, 160));
+			img.setBackgroundDrawable(null);
+			img.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					String url =(String) ((ImageButton)v).getContentDescription();
@@ -67,12 +50,29 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
 					context.startActivity(i);
 				}
 			});
-	        new GetImage(((ImageView)imgbnew)).execute(image.getLink().replace(image.getId(), image.getId()+ "b") );
-		} else {
-			imgbnew = (ImageButton) convertView;
+			new GetImage(img).execute(image.getLink().replace(image.getId(), image.getId()+ "b") );
+			cache.add(img);
 		}
-		
-        return imgbnew;
+	}
+	
+	@Override
+	public int getCount() {
+		return imgurImages.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return null;
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return 0;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		return cache.get(position);
 	}
 
 }

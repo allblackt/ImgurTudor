@@ -2,6 +2,7 @@ package com.tudor.imgur.APICalls;
 
 import static com.tudor.imgur.util.Constants.TAG;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.FileEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
@@ -44,15 +47,27 @@ public abstract class ImgurAPI extends AsyncTask<String, Void, BasicNameValuePai
 				request = new HttpGet(url);
 				if(headers != null && headers.size() > 0) {
 					for (NameValuePair header : headers) {
-						Log.d(TAG, String.format("HTTP HEADER [%s=%s]", header.getName(), header.getValue()));
+//						Log.d(TAG, String.format("HTTP HEADER [%s=%s]", header.getName(), header.getValue()));
 						request.addHeader(header.getName(), header.getValue());
 					}
 				}
 				break;
+			case POST:
+				request = new HttpPost(url);
+				HttpPost postRequest = (HttpPost) request;
+				if(headers != null && headers.size() > 0) {
+					for (NameValuePair header : headers) {
+//						Log.d(TAG, String.format("HTTP HEADER [%s=%s]", header.getName(), header.getValue()));
+						request.addHeader(header.getName(), header.getValue());
+					}
+				}
+				File file = new File(params[0]);
+				FileEntity fileEntity = new FileEntity(file, "image/*");
+				postRequest.setEntity(fileEntity);
+				break;
 			default:
 				Log.w(TAG, "Invalid RequestType");
 				break;
-		
 		}
 		
 		HttpResponse response = null;

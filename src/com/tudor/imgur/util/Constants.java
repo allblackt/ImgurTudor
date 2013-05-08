@@ -28,14 +28,18 @@ public class Constants {
 	
 	public static enum RequestType {
 		GET,
-		POST,
-		PUT,
-		DELETE
+		POST
+	}
+	
+	public static enum ResultType {
+		GET_ALL_IMAGES,
+		UPLOAD_IMAGE
 	}
 	
 	public static final class ImgurAPIURL{
 		public static final String ACCOUNT_BASE   = "https://api.imgur.com/3/account/me";
 		public static final String ACCOUNT_IMAGES = "https://api.imgur.com/3/account/me/images";
+		public static final String IMAGE_POST     = "https://api.imgur.com/3/image";
 	}
 	
 }

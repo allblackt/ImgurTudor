@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.Window;
+import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
 import com.tudor.imgur.APICalls.ImgurLogin;
@@ -33,12 +33,9 @@ public class Main extends Activity {
 		settings = getSharedPreferences(Constants.PREFERENCES_FILE_NAME, 0);
 		RelativeLayout root = (RelativeLayout) findViewById(R.id.root);
 
-		String auth = settings.getString(Constants.SettingsMap.ACCESS_TOKEN, null);
 		String refresh = settings.getString(Constants.SettingsMap.REFRESH_TOKEN, null);
 		Long token_exp = settings.getLong(Constants.SettingsMap.ACCESS_TOKEN_VALIDITY, System.currentTimeMillis()/1000);
 		
-		/* Force refresh */
-		token_exp = System.currentTimeMillis()/1000;
 		if(refresh == null){
 			/* First application run */
 			Log.d(TAG, "Refresh token is null, getting a new one...");
@@ -54,25 +51,19 @@ public class Main extends Activity {
 			Log.d(TAG, "Seems like everything is ready to start making calls...");
 			this.onLoginCompleted();
 		}
-
-		
-
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Constants.ref_currentActivity = this;
-		Log.d(TAG, "On Resume called");
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Log.d(TAG, "onActivityResult");
+		if(resultCode == -1) {
+			finish();
+		} else if (resultCode == -2) {
+			ImgurLogin login = new ImgurLogin((RelativeLayout)findViewById(R.id.root), this);
+			login.getPin();
+		}
+			
 	}
 
 	public void onPinLoaded() {
@@ -107,7 +98,7 @@ public class Main extends Activity {
 		Log.d(TAG, "Login was completed");
 		/* Transition to the gridview which will hold the images */
 		Intent viewAllImages = new Intent(this,ImageGridView.class);
-        this.startActivity(viewAllImages); 
+        this.startActivityForResult(viewAllImages, 0);
 	}
 
 	public void onLoginFailed() {
