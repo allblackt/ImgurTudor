@@ -31,12 +31,12 @@ import com.tudor.imgur.R;
 import com.tudor.imgur.util.Constants;
 import com.tudor.imgur.util.Constants.TradeItemType;
 import com.tudor.imgur.util.http.MyHttpClientFactory;
+import static com.tudor.imgur.util.Constants.TAG;
 
 public class ImgurLogin {
 
 	View RootLayout;
 	Context context;
-	private final String TAG = this.getClass().getName();
 
 	public ImgurLogin(View rootLayout, Context context) {
 		this.RootLayout = rootLayout;

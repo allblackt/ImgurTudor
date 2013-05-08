@@ -12,12 +12,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.tudor.imgur.util.Constants;
+import static com.tudor.imgur.util.Constants.TAG;
 
 public class GetImage extends AsyncTask<String, Void, Drawable> {
 
 	private ImageView imb;
-	private final String TAG = Constants.TAG;
 	
 	public GetImage(ImageView imb)
 	{

@@ -1,7 +1,8 @@
 package com.tudor.imgur.APICalls;
 
+import static com.tudor.imgur.util.Constants.TAG;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -13,18 +14,15 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import com.tudor.imgur.util.AsyncTaskCompleteListener;
-import com.tudor.imgur.util.Constants;
-import com.tudor.imgur.util.Constants.RequestType;
-import com.tudor.imgur.util.http.MyHttpClientFactory;
-
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.tudor.imgur.util.AsyncTaskCompleteListener;
+import com.tudor.imgur.util.Constants.RequestType;
+import com.tudor.imgur.util.http.MyHttpClientFactory;
+
 public abstract class ImgurAPI extends AsyncTask<String, Void, BasicNameValuePair> implements AsyncTaskCompleteListener<BasicNameValuePair> {
 
-	private final String TAG = Constants.TAG;
-	
 	private List<NameValuePair> headers;
 	private List<NameValuePair> params;
 	private String url;
@@ -63,10 +61,8 @@ public abstract class ImgurAPI extends AsyncTask<String, Void, BasicNameValuePai
 			response = httpclient.execute(request);
 			return new BasicNameValuePair(Integer.toString(response.getStatusLine().getStatusCode()), EntityUtils.toString(response.getEntity()));
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
